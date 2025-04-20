@@ -137,10 +137,3 @@ cd TodoList.Api
 # Execute a aplicação
 dotnet run
 ```
-
----
-```
-
----
-
-Você pode copiar e colar isso diretamente no campo de `README.md` do seu repositório GitHub. Se quiser, posso te gerar um arquivo `.md` para baixar também. Deseja?
