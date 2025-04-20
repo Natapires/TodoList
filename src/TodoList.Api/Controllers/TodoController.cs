@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Application.UseCases.TodoList.Delete;
+using TodoList.Application.UseCases.TodoList.GetAll;
 using TodoList.Application.UseCases.TodoList.Register;
 using TodoList.Application.UseCases.TodoList.Update;
 using TodoList.Communication.Requests;
@@ -23,7 +24,9 @@ namespace TodoList.Api.Controllers
         }
 
         [HttpPut]
-        [Route("id")]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status400BadRequest)]
         public IActionResult Update([FromRoute] int id, [FromBody] RequestTodoJson request)
         {
             var useCase = new UpdateTodoUseCase();
@@ -32,8 +35,26 @@ namespace TodoList.Api.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(ResponseAllTodoJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult GetAll()
+        {
+            var useCase = new GetAllTodoJson();
+            var response = useCase.Execute();
+
+            if (response.Todos.Any())
+            {
+                return Ok(response);
+            }
+
+            return NoContent();
+        }
+
         [HttpDelete]
         [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
             var useCase = new DeleteTodoUseCase();
